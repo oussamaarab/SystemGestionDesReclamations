@@ -49,4 +49,36 @@ class Reclamation extends Model
         return $this->hasMany(ReclamationResponse::class)
             ->orderBy('responded_at', 'desc');
     }
+    //scope
+     public function scopeVisibleToUser($query, $user)
+    {
+        if ($user && $user->hasRole('AGENT_SERVICE')) {
+            $query->where('current_service_id', $user->service_id);
+        }
+
+        return $query;
+    }
+
+    public function scopeFilter($query, $request, $user = null)
+    {
+        $query->visibleToUser($user);
+
+        if ($request->filled('reference')) {
+            $query->where('reference', 'like', '%' . $request->reference . '%');
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('division_id')) {
+            $query->where('current_division_id', $request->division_id);
+        }
+
+        if ($request->filled('service_id') && !($user && $user->hasRole('AGENT_SERVICE'))) {
+            $query->where('current_service_id', $request->service_id);
+        }
+
+        return $query;
+    }
 }

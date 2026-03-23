@@ -1,6 +1,5 @@
 <?php
-//use Yajra\DataTables\Facades\DataTables;
-//YAJRA DATATABLE
+//YAJRA
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -32,28 +31,11 @@ class ReclamationController extends Controller
     /** @var User $user */
     $user = Auth::user();
 
-    $query = Reclamation::with(['division', 'service']);
-
-    if ($user && $user->hasRole('AGENT_SERVICE')) {
-        $query->where('current_service_id', $user->service_id);
-    }
+    //use laravel scoop
+    $query = Reclamation::with(['division', 'service'])
+    ->filter($request, $user);
     
 
-    if ($request->filled('reference')) {
-        $query->where('reference', 'like', '%' . $request->reference . '%');
-    }
-
-    if ($request->filled('status')) {
-        $query->where('status', $request->status);
-    }
-
-    if ($request->filled('division_id')) {
-        $query->where('current_division_id', $request->division_id);
-    }
-
-    if ($request->filled('service_id')) {
-        $query->where('current_service_id', $request->service_id);
-    }
 
     $reclamations = $query->latest()->paginate(10)->appends($request->query());
 
