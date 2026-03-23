@@ -22,6 +22,6 @@ class Division extends Model
     
     public function reclamations()
     {
-        return $this->hasMany(Reclamation::class, 'current_service_id');
+        return $this->hasMany(Reclamation::class, 'current_division_id');
     }
 }
