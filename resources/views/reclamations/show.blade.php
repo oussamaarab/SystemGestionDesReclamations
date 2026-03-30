@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Details de la reclamation</title>
-
+<link rel="icon" type="image/png" href="{{ asset('myicon.png') }}">
 <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
 
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
